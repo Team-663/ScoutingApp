@@ -31,6 +31,23 @@ def background(display):
     pygame.draw.polygon(display, darkestPurple, ((0, 0), (112, 0), (0, 25)))
     pygame.display.update()
 
+def descriptions(display, message):
+    fontName = pygame.font.get_default_font()
+    font = pygame.font.Font(fontName, 25)
+    smallFont = pygame.font.Font(fontName, 20)
+    if message == 1:
+        text = font.render("Enter the data code in the box below.", True, (0, 0, 0)) # TODO:add QR support
+        smallText = smallFont.render("Or, scan the QR code.", True, (0, 0, 0))
+    elif message == 2:
+        text = font.render("Your code has been accepted!", True, (0, 0, 0))
+        smallText = smallFont.render("Type \"yes\" in the box to send another code, and no to exit.", True, (0, 0, 0))
+    elif message == 3:
+        text = font.render("Your code has been rejected!", True, (0, 0, 0))
+        smallText = smallFont.render("Type \"yes\" in the box to send another code, and no to exit.", True, (0, 0, 0))
+    display.blit(text, (50, 100))
+    display.blit(smallText, (50, 150))
+    pygame.display.update()
+
 
 COLOR_INACTIVE = (0, 0, 0)
 COLOR_ACTIVE = (66, 66, 66)
@@ -60,8 +77,6 @@ class InputBox: # Created by stackoverflow user skrx, get_text() added by me
         if event.type == pygame.KEYDOWN:
             if self.active:
                 if event.key == pygame.K_RETURN:
-                    print(self.text)
-                    output = self.text
                     self.text = ''
                 elif event.key == pygame.K_BACKSPACE:
                     self.text = self.text[:-1]
@@ -98,17 +113,27 @@ if __name__ == "__main__":
     # runs startup protocol
     running = True
     showingBox = True
-    # startupScreen(screen)
-    # time.sleep(5)
+    currentMessage = 1
+    startupScreen(screen)
+    time.sleep(2)
     background(screen)
     while running:
         background(screen)
-        textinput.draw(screen)
+        descriptions(screen, currentMessage)
+        if currentMessage == 1:
+            textinput.draw(screen)
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
                 stop()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                output = textinput.get_text()
+                print(output)
+                if output.lower() == "stop":
+                    startupScreen(screen)
+                    time.sleep(2)
+                    stop()
             textinput.handle_event(event)
         textinput.update()
         pygame.display.update()
-        clock.tick(30)
+        clock.tick(15)
