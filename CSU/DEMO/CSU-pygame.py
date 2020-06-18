@@ -16,7 +16,7 @@ def startupScreen(display):
     fontName = pygame.font.get_default_font()
     font = pygame.font.Font(fontName, 32)
     text = font.render("CSU Interface", True, (0, 0, 0))
-    display.blit(text, (50, 100))
+    display.blit(text, (150, 200))
     pygame.display.update()
 
 
@@ -26,9 +26,9 @@ def background(display):
     darkPurple = (71, 10, 145)
     darkestPurple = (45, 6, 112)
     display.fill((125, 125, 125))
-    pygame.draw.polygon(display, lightPurple, ((0, 0), (450, 0), (0, 300)))
-    pygame.draw.polygon(display, darkPurple, ((0, 0), (225, 0), (0, 100)))
-    pygame.draw.polygon(display, darkestPurple, ((0, 0), (112, 0), (0, 25)))
+    pygame.draw.polygon(display, lightPurple, ((0, 0), (650, 0), (0, 450)))
+    pygame.draw.polygon(display, darkPurple, ((0, 0), (425, 0), (0, 225)))
+    pygame.draw.polygon(display, darkestPurple, ((0, 0), (212, 0), (0, 100)))
     pygame.display.update()
 
 def descriptions(display, message):
@@ -44,13 +44,13 @@ def descriptions(display, message):
     elif message == 3:
         text = font.render("Your code has been rejected!", True, (0, 0, 0))
         smallText = smallFont.render("Type \"yes\" in the box to send another code, and no to exit.", True, (0, 0, 0))
-    display.blit(text, (50, 100))
-    display.blit(smallText, (50, 150))
+    display.blit(text, (150, 200))
+    display.blit(smallText, (150, 250))
     pygame.display.update()
 
 
-COLOR_INACTIVE = (0, 0, 0)
-COLOR_ACTIVE = (66, 66, 66)
+COLOR_ACTIVE = (0, 0, 0)
+COLOR_INACTIVE = (66, 66, 66)
 FONT = pygame.font.Font(None, 25)
 
 
@@ -87,7 +87,7 @@ class InputBox: # Created by stackoverflow user skrx, get_text() added by me
 
     def update(self):
         # Resize the box if the text is too long.
-        width = max(500, self.txt_surface.get_width() + 10)
+        width = max(900, self.txt_surface.get_width() + 10)
         self.rect.w = width
 
     def draw(self, screen):
@@ -102,14 +102,14 @@ class InputBox: # Created by stackoverflow user skrx, get_text() added by me
 
 if __name__ == "__main__":
     # Creates screen
-    DISPLAY_WIDTH = 600
-    DISPLAY_HEIGHT = 600
+    DISPLAY_WIDTH = 1000
+    DISPLAY_HEIGHT = 800
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
     pygame.display.set_caption('CSU Interface')
     logo = pygame.image.load("logo.png")
     pygame.display.set_icon(logo)
-    textinput = InputBox(x=50, y=300, w=500, h=50)
+    textinput = InputBox(x=50, y=400, w=900, h=50)
     # runs startup protocol
     running = True
     showingBox = True
