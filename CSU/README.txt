@@ -8,6 +8,6 @@ ETHAN'S GOALS:
 2: Add functionality for QR codes
 3: Package neatly (somehow)
 
-*** I will attempt to write my demo in Python ***
+*** I will write my system in Python ***
 
 BIG NOTICE: My text box can fit 50 characters before it needs to expand. Big enough?
