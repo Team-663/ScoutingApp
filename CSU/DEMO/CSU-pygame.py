@@ -105,10 +105,17 @@ class InputBox:  # Created by stackoverflow user skrx, get_text() added by me
 
 
 def decrypt(display, data):
-    data = data.split(".")
-    if len(data) == 1:
+    splitData = data.split(".")
+    if len(splitData) != 13:
         background(display)
         descriptions(display, 3)
+        pygame.display.update()
+        time.sleep(5)
+        background(display)
+        descriptions(display, 1)
+    elif len(splitData) == 13:
+        background(display)
+        descriptions(display, 2)
         pygame.display.update()
         time.sleep(5)
         background(display)
@@ -147,12 +154,10 @@ def buttons(display):  # displays and manages buttons
     pygame.display.update()
     # detect clicks
     click = pygame.mouse.get_pressed()
-    if 900+100 > mouse[0] > 900 and 750+50 > mouse[1] > 750:
-        if click[0] == 1:
-            stop()
-    elif 650+250 > mouse[0] > 650 and 750+50 > mouse[1] > 750:
-        if click[0] == 1:
-            print("Sending to sheet!") # TODO: Add sending to spreadsheet
+    if 900+100 > mouse[0] > 900 and 750+50 > mouse[1] > 750 and click[0] == 1:
+        stop()
+    elif 650+250 > mouse[0] > 650 and 750+50 > mouse[1] > 750 and click[0] == 1:
+        print("Sending to sheet!") # TODO: Add sending to spreadsheet
 
 
 
