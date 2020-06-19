@@ -1,13 +1,31 @@
-import time, sys, os
-
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+import os
+import sys
+import time
+import json
+import xlsxwriter
+import datetime
 import pygame
 
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+
 pygame.init()
+
+# get path to file
+path = os.path.dirname(__file__)
+userPath = os.path.expanduser("~")
+dataFile = os.path.join(path, "data.json")
+documents = os.path.join(userPath, "Documents")
+
+with open(dataFile, "r") as j:
+    scoutData = json.loads(j.read())
+    print(scoutData)
+
 
 
 def stop():
     startupScreen(screen)
+    with open(dataFile, "w") as outfile:
+        json.dump(scoutData, outfile)
     time.sleep(2)
     pygame.quit()
     sys.exit()
@@ -32,6 +50,8 @@ def background(display):
     pygame.draw.polygon(display, lightPurple, ((0, 0), (650, 0), (0, 450)))
     pygame.draw.polygon(display, darkPurple, ((0, 0), (425, 0), (0, 225)))
     pygame.draw.polygon(display, darkestPurple, ((0, 0), (212, 0), (0, 100)))
+    image = pygame.image.load(str(path) + "\logo.png")
+    display.blit(image, (-10, 617))
     pygame.display.update()
 
 
@@ -40,7 +60,7 @@ def descriptions(display, message):
     font = pygame.font.Font(fontName, 25)
     smallFont = pygame.font.Font(fontName, 20)
     if message == 1:
-        text = font.render("Enter the data code in the box below.", True, (0, 0, 0))  # TODO:add QR support
+        text = font.render("Enter the data code in the box below.", True, (0, 0, 0))
         smallText = smallFont.render("Or, scan the QR code.", True, (0, 0, 0))
     elif message == 2:
         text = font.render("Your code has been accepted!", True, (0, 0, 0))
@@ -71,7 +91,8 @@ class InputBox:  # Created by stackoverflow user skrx, get_text() added by me
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             # If the user clicked on the input_box rect. self.rect.collidepoint(event.pos)
-            if self.rect.x+self.rect.w > event.pos[0] > self.rect.x and self.rect.y+self.rect.h > event.pos[1] > self.rect.y:
+            if self.rect.x + self.rect.w > event.pos[0] > self.rect.x and self.rect.y + self.rect.h > event.pos[
+                1] > self.rect.y:
                 # Toggle the active variable.
                 self.active = True
             else:
@@ -105,21 +126,24 @@ class InputBox:  # Created by stackoverflow user skrx, get_text() added by me
 
 
 def decrypt(display, data):
+    global scoutData
     splitData = data.split(".")
     if len(splitData) != 13:
         background(display)
         descriptions(display, 3)
         pygame.display.update()
-        time.sleep(5)
+        time.sleep(3)
         background(display)
         descriptions(display, 1)
     elif len(splitData) == 13:
         background(display)
         descriptions(display, 2)
         pygame.display.update()
-        time.sleep(5)
+        time.sleep(3)
         background(display)
         descriptions(display, 1)
+        scoutData.append(splitData)
+        print(scoutData)
 
 
 def buttons(display):  # displays and manages buttons
@@ -130,14 +154,14 @@ def buttons(display):  # displays and manages buttons
     font = pygame.font.Font(fontName, 20)
     # checks if mouse is on button
     mouse = pygame.mouse.get_pos()
-    if 900+100 > mouse[0] > 900 and 750+50 > mouse[1] > 750:
+    if 900 + 100 > mouse[0] > 900 and 750 + 50 > mouse[1] > 750:
         exit = font.render("Exit", True, (0, 0, 0))
         pygame.draw.rect(display, lightestPurple, (900, 750, 100, 50))
         display.blit(exit, (930, 765))
         send = font.render("Send to Spreadsheet", True, (0, 0, 0))
         pygame.draw.rect(display, purple, (650, 750, 250, 50))
         display.blit(send, (670, 765))
-    elif 650+250 > mouse[0] > 650 and 750+50 > mouse[1] > 750:
+    elif 650 + 250 > mouse[0] > 650 and 750 + 50 > mouse[1] > 750:
         exit = font.render("Exit", True, (0, 0, 0))
         pygame.draw.rect(display, lightPurple, (900, 750, 100, 50))
         display.blit(exit, (930, 765))
@@ -154,11 +178,20 @@ def buttons(display):  # displays and manages buttons
     pygame.display.update()
     # detect clicks
     click = pygame.mouse.get_pressed()
-    if 900+100 > mouse[0] > 900 and 750+50 > mouse[1] > 750 and click[0] == 1:
+    if 900 + 100 > mouse[0] > 900 and 750 + 50 > mouse[1] > 750 and click[0] == 1:
         stop()
-    elif 650+250 > mouse[0] > 650 and 750+50 > mouse[1] > 750 and click[0] == 1:
-        print("Sending to sheet!") # TODO: Add sending to spreadsheet
+    elif 650 + 250 > mouse[0] > 650 and 750 + 50 > mouse[1] > 750 and click[0] == 1:
+        print("Sending to sheet!")  # TODO: take JSON w/data and send to spreadsheet
+        sendToSheet(scoutData)
 
+
+def sendToSheet(data):
+    print(scoutData)
+    localTime = datetime.datetime.now()
+    filename = "Scouting Data " + str(localTime.month) + "/" + str(localTime.day) + "/" + str(localTime.year) + ", " + str(localTime.time())
+    print(filename)
+    target = xlsxwriter.Workbook(os.path.join(documents, filename))
+    print("sent")
 
 
 if __name__ == "__main__":
@@ -168,7 +201,7 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
     pygame.display.set_caption('CSU Interface')
-    logo = pygame.image.load("logo.png")
+    logo = pygame.image.load(str(path) + "\logo.png")
     pygame.display.set_icon(logo)
     textinput = InputBox(x=50, y=400, w=900, h=50)
     # runs startup protocol
@@ -195,4 +228,4 @@ if __name__ == "__main__":
                 textinput.draw(screen)
             textinput.update()
             pygame.display.update()
-        clock.tick(15) # TODO:Find out how to stop flickering
+        clock.tick(15)

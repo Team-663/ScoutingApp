@@ -10,4 +10,4 @@ ETHAN'S GOALS:
 
 *** I will write my system in Python ***
 
-BIG NOTICE: My text box can fit 50 characters before it needs to expand. Big enough?
+Yes, I know that the logo is old, but that's all I could get.
