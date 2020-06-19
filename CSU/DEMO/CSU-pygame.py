@@ -7,7 +7,7 @@ pygame.init()
 
 
 def stop():
-    startupScreen(screen)
+    startupScreen(screen) #test
     time.sleep(2)
     pygame.quit()
     sys.exit()
