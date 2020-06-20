@@ -13,7 +13,7 @@ teamNumber | Team Number
 autoMode[all] | Amount scored in each port
 autoLine | 1, 0 (yes, no)
 teleop[all] | Amount scored in each port
-CPRotation | Num assigned to action (mostly 0 for no action)
-CPPosition | Num assigned to action (mostly 0 for no action)
+CPRotation | 0, 1, 2 (Did Not Attempt, Failed, Succeeded)
+CPPosition | 0, 1, 2 (Did Not Attempt, Failed, Succeeded)
 Climb/Park | 0, 1, 2, 3 (none, parked, climbed - not level, climbed - level
 
