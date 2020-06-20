@@ -1,6 +1,6 @@
 # ScoutingApp
 Code for our custom scouting app (unnamed) and the CSU
-#Code Format (2020)
+# Code Format (2020)
 Name.matchNumber.teamNumber.autoMode[Bottom port].autoMode[Outer port].autoMode[Inner port].autoLine.teleopBottom.teleopOuter.teleopInner.CPRotation.CPPosition.Climb/park
 
 I get that this is long, but it stores all the data that we already gather.
