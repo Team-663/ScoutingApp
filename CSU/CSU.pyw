@@ -226,13 +226,15 @@ class csu:
                         value = "Climbed - Level"
                 worksheet.write(row, i, value)
             row += 1
-
-        workbook.close()
+        try:
+            workbook.close()
+        except:
+            pass
         # print("sent")
 
     def newDatafile(self):
         self.localTime = datetime.datetime.now()
-        newFile = "ArchivedData_" + self.localTime.strftime("%Y-%m-%d") + ".json"
+        newFile = "ArchivedData_" + self.localTime.strftime("%Y-%m-%d_%H,%M,%S") + ".json"
         os.chdir(self.path)
         os.rename("data.json", newFile)
 
