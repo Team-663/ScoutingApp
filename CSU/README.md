@@ -1,4 +1,4 @@
-#This directory is for the CSU!
+# This directory is for the CSU!
 
 The App code will be in ..\App
 
