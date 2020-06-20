@@ -7,7 +7,7 @@ I get that this is long, but it stores all the data that we already gather.
 
 Data | Possible Entries
 -----|-----------------
-Name | User Name
+Name | User Initials
 matchNumber | Match Number
 teamNumber | Team Number
 autoMode[all] | Amount scored in each port
