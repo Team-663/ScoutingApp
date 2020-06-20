@@ -3,37 +3,28 @@ import os
 import pyqrcode
 import pygame
 import png
-import sys, time
+import random, string, sys, time
 from pyqrcode import QRCode
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-
 
 pygame.init()
 
 DISPLAY_WIDTH = 1000
 DISPLAY_HEIGHT = 800
 
-class qrtest:
-    def __init__(self):
-        self.qrlist = [
-            "HJS.12.13.14.15.16.1.18.19.10.0.1.2",
-            "EAS.22.23.24.25.26.1.28.29.20.0.1.2",
-            "JWS.32.33.34.35.36.1.38.39.30.0.1.2",
-            "AMS.42.43.44.45.46.1.48.49.40.0.1.2",
-            "HJS.52.53.54.55.56.1.58.59.50.0.1.2",
-            "EAS.62.63.64.65.66.1.68.69.60.0.1.2",
-            "JWS.72.73.74.75.76.1.78.79.70.0.1.2"
-        ]
 
-        self.currentqr = 0
+class qrTest:
+    def __init__(self):
         self.qr = None
+        self.qrstring = None
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
         pygame.display.set_caption('CSU Interface')
 
     def run(self):
         running = True
+        self.nextQR()
         self.startupScreen()
         time.sleep(2)
         self.background()
@@ -69,6 +60,10 @@ class qrtest:
         if qr:
             image = pygame.image.load(qr)
             self.screen.blit(image, (400, 300))
+            fontName = pygame.font.get_default_font()
+            font = pygame.font.Font(fontName, 32)
+            text = font.render(self.qrstring, True, (0, 0, 0))
+            self.screen.blit(text, (150, 200))
         pygame.display.update()
 
     def stop(self):
@@ -86,23 +81,23 @@ class qrtest:
         # checks if mouse is on button
         mouse = pygame.mouse.get_pos()
         if 900 + 100 > mouse[0] > 900 and 750 + 50 > mouse[1] > 750:
-            exit = font.render("Exit", True, (0, 0, 0))
+            text = font.render("Exit", True, (0, 0, 0))
             pygame.draw.rect(self.screen, lightestPurple, (900, 750, 100, 50))
-            self.screen.blit(exit, (930, 765))
+            self.screen.blit(text, (930, 765))
             send = font.render("Next", True, (0, 0, 0))
             pygame.draw.rect(self.screen, purple, (650, 750, 250, 50))
             self.screen.blit(send, (670, 765))
         elif 650 + 250 > mouse[0] > 650 and 750 + 50 > mouse[1] > 750:
-            exit = font.render("Exit", True, (0, 0, 0))
+            text = font.render("Exit", True, (0, 0, 0))
             pygame.draw.rect(self.screen, lightPurple, (900, 750, 100, 50))
-            self.screen.blit(exit, (930, 765))
+            self.screen.blit(text, (930, 765))
             send = font.render("Next", True, (0, 0, 0))
             pygame.draw.rect(self.screen, lightPurple, (650, 750, 250, 50))
             self.screen.blit(send, (670, 765))
         else:
-            exit = font.render("Exit", True, (0, 0, 0))
+            text = font.render("Exit", True, (0, 0, 0))
             pygame.draw.rect(self.screen, lightPurple, (900, 750, 100, 50))
-            self.screen.blit(exit, (930, 765))
+            self.screen.blit(text, (930, 765))
             send = font.render("Next", True, (0, 0, 0))
             pygame.draw.rect(self.screen, purple, (650, 750, 250, 50))
             self.screen.blit(send, (670, 765))
@@ -116,25 +111,40 @@ class qrtest:
 
     def nextQR(self):
 
-        s = self.qrlist[self.currentqr]
+        # "HJS.12.13.14.15.16.1.18.19.10.0.1.2"
+
+        s = self.randomUser()
+        s += f'.{str(random.randint(0,100))}'
+        s += f'.{str(random.randint(0,100))}'
+        s += f'.{str(random.randint(0,100))}'
+        s += f'.{str(random.randint(0,100))}'
+        s += f'.{str(random.randint(0,100))}'
+        s += f'.{str(random.randint(0,1))}'
+        s += f'.{str(random.randint(0,100))}'
+        s += f'.{str(random.randint(0,100))}'
+        s += f'.{str(random.randint(0,100))}'
+        s += f'.{str(random.randint(0,1))}'
+        s += f'.{str(random.randint(0,1))}'
+        s += f'.{str(random.randint(0,1))}'
 
         # Generate QR code
-        url = pyqrcode.create(s)
+        self.qrstring = s
+        url = pyqrcode.create(self.qrstring)
 
         # Create and save the png file naming "myqr.png"
         png = 'myqr.png'
         url.png(png, scale = 6)
 
-        if self.currentqr < len(self.qrlist) - 1:
-            self.currentqr += 1
-        else:
-            self.currentqr = 0
-
         self.qr = png
 
         return png
 
+    def randomUser(self):
+        letters = string.ascii_uppercase
+        return ''.join(random.choice(letters) for i in range(3))
+
+
 if __name__ == "__main__":
 
-    qrTest = qrtest()
-    qrTest.run()
+    qrt = qrTest()
+    qrt.run()
