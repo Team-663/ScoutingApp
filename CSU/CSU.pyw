@@ -29,7 +29,7 @@ class csu:
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
         pygame.display.set_caption('CSU Interface')
-        self.logo = pygame.image.load(self.path + "\logo.png")
+        self.logo = pygame.image.load(os.path.join(self.path, "logo.png"))
         pygame.display.set_icon(self.logo)
 
         self.localTime = datetime.datetime.now()
@@ -71,7 +71,7 @@ class csu:
         pygame.draw.polygon(self.screen, lightPurple, ((0, 0), (650, 0), (0, 450)))
         pygame.draw.polygon(self.screen, darkPurple, ((0, 0), (425, 0), (0, 225)))
         pygame.draw.polygon(self.screen, darkestPurple, ((0, 0), (212, 0), (0, 100)))
-        image = pygame.image.load(self.path + "\logo.png")
+        image = pygame.image.load(os.path.join(self.path, "logo.png"))
         self.screen.blit(image, (-10, 617))
         pygame.display.update()
 
