@@ -20,7 +20,7 @@ class qrTest:
         self.qrstring = None
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
-        pygame.display.set_caption('CSU Interface')
+        pygame.display.set_caption('CSU QR Test')
 
     def run(self):
         running = True
@@ -44,7 +44,7 @@ class qrTest:
         self.background()
         fontName = pygame.font.get_default_font()
         font = pygame.font.Font(fontName, 32)
-        text = font.render("CSU QR Test", True, (0, 0, 0))
+        text = font.render('CSU QR Test', True, (0, 0, 0))
         self.screen.blit(text, (150, 200))
         pygame.display.update()
 
@@ -68,7 +68,7 @@ class qrTest:
 
     def stop(self):
         self.startupScreen()
-        time.sleep(2)
+        time.sleep(1)
         pygame.quit()
         sys.exit()
 
@@ -81,24 +81,24 @@ class qrTest:
         # checks if mouse is on button
         mouse = pygame.mouse.get_pos()
         if 900 + 100 > mouse[0] > 900 and 750 + 50 > mouse[1] > 750:
-            text = font.render("Exit", True, (0, 0, 0))
+            text = font.render('Exit', True, (0, 0, 0))
             pygame.draw.rect(self.screen, lightestPurple, (900, 750, 100, 50))
             self.screen.blit(text, (930, 765))
-            send = font.render("Next", True, (0, 0, 0))
+            send = font.render('Next', True, (0, 0, 0))
             pygame.draw.rect(self.screen, purple, (650, 750, 250, 50))
             self.screen.blit(send, (670, 765))
         elif 650 + 250 > mouse[0] > 650 and 750 + 50 > mouse[1] > 750:
-            text = font.render("Exit", True, (0, 0, 0))
+            text = font.render('Exit', True, (0, 0, 0))
             pygame.draw.rect(self.screen, lightPurple, (900, 750, 100, 50))
             self.screen.blit(text, (930, 765))
-            send = font.render("Next", True, (0, 0, 0))
+            send = font.render('Next', True, (0, 0, 0))
             pygame.draw.rect(self.screen, lightPurple, (650, 750, 250, 50))
             self.screen.blit(send, (670, 765))
         else:
-            text = font.render("Exit", True, (0, 0, 0))
+            text = font.render('Exit', True, (0, 0, 0))
             pygame.draw.rect(self.screen, lightPurple, (900, 750, 100, 50))
             self.screen.blit(text, (930, 765))
-            send = font.render("Next", True, (0, 0, 0))
+            send = font.render('Next', True, (0, 0, 0))
             pygame.draw.rect(self.screen, purple, (650, 750, 250, 50))
             self.screen.blit(send, (670, 765))
         pygame.display.update()
@@ -129,15 +129,15 @@ class qrTest:
 
         # Generate QR code
         self.qrstring = s
-        url = pyqrcode.create(self.qrstring)
+        qrcode = pyqrcode.create(self.qrstring)
 
         # Create and save the png file naming "myqr.png"
         png = 'myqr.png'
-        url.png(png, scale = 6)
+        qrcode.png(png, scale = 6)
 
         self.qr = png
 
-        return png
+        return
 
     def randomUser(self):
         letters = string.ascii_uppercase
